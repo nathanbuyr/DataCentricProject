@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Student</title>
+</head>
+<body>
+    <h1>Add Student</h1>
+
+    <% if (errors && errors.length > 0) { %>
+        <ul>
+            <% errors.forEach((error) => { %>
+                <li style="color: red;"><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
+
+    <form action="/students/add" method="POST">
+        <label for="sid">Student ID:</label>
+        <input type="text" id="sid" name="sid" value="<%= student ? student.sid : '' %>"><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" value="<%= student ? student.name : '' %>"><br>
+
+        <label for="age">Age:</label>
+        <input type="number" id="age" name="age" value="<%= student ? student.age : '' %>"><br>
+
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>

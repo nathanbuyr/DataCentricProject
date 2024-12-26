@@ -55,7 +55,20 @@ var updateStudent = function (sid, name, age) {
     });
   };
   
+  function addStudent(sid, name, age) {
+    return new Promise((resolve, reject) => {
+        connection.query("INSERT INTO student (sid, name, age) VALUES (?, ?, ?)", [sid, name, age], 
+            (error, results) => {
+                if (error) {
+                    reject(error);
+                } else {
+                    resolve(results);
+                }
+            }
+        );
+    });
+}
 
 module.exports = {
-  findAllStudents, findStudentById, updateStudent
+  findAllStudents, findStudentById, updateStudent, addStudent
 };
