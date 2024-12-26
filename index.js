@@ -27,6 +27,37 @@ app.get("/students", (req, res) => {
       });
   });
 
+  // Route to render the update form for a student
+app.get("/students/edit/:sid", (req, res) => {
+    const studentId = req.params.sid;
+  
+    // Grabbing student details from MySQL
+    mysqlDao.findStudentById(studentId)
+      .then((student) => {
+        res.render("editStudent", { student: student });
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send(error);
+      });
+  });
+
+  // Route to handle updating a student's details
+app.post("/students/edit/:sid", (req, res) => {
+    const studentId = req.params.sid;
+    const { name, age } = req.body; // Get updated name and age from form
+  
+    // Update student data in MySQL
+    mysqlDao.updateStudent(studentId, name, age)
+      .then(() => {
+        res.redirect("/students"); // Redirect to students list after update
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send(error);
+      });
+  });
+
 app.get("/grades", (req, res) => {
     res.send("<h1>Grades Page</h1>");
 });

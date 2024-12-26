@@ -23,6 +23,39 @@ var findAllStudents = function () {
   });
 };
 
+// Find a student by ID
+var findStudentById = function (sid) {
+    return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM student WHERE sid = ?", [sid], (error, results) => {
+        if (error) {
+          reject(error); // Reject if error occurs
+        } else if (results.length === 0) {
+          reject(new Error("Student not found")); // If no student is found, reject with message
+        } else {
+          resolve(results[0]); // Resolve with student data
+        }
+      });
+    });
+  };
+
+  // Update a student's details in MySQL
+var updateStudent = function (sid, name, age) {
+    return new Promise((resolve, reject) => {
+      connection.query(
+        "UPDATE student SET name = ?, age = ? WHERE sid = ?",
+        [name, age, sid],
+        (error, results) => {
+          if (error) {
+            reject(error); // Reject if error occurs
+          } else {
+            resolve(results); // Resolve if update is successful
+          }
+        }
+      );
+    });
+  };
+  
+
 module.exports = {
-  findAllStudents
+  findAllStudents, findStudentById, updateStudent
 };
