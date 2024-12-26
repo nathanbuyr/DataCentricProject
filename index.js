@@ -1,5 +1,6 @@
 const bodyParser = require('body-parser');
 var express = require('express')
+const mysqlDao = require('./mysqlDao');
 var mongoDao = require('./mongoDao')
 var app = express()
 app.set('view engine', 'ejs') //setting render engine
@@ -14,9 +15,17 @@ app.get("/", (req, res) => {
     res.render("home");
 });
 
+// Route for displaying students
 app.get("/students", (req, res) => {
-    res.send("<h1>Students Page</h1>");
-});
+    mysqlDao.findAllStudents() // Get students from MySQL
+      .then((data) => {
+        res.render("students", { students: data }); // Pass the students data to EJS
+      })
+      .catch((error) => {
+        console.log(error);
+        res.send(error);
+      });
+  });
 
 app.get("/grades", (req, res) => {
     res.send("<h1>Grades Page</h1>");
