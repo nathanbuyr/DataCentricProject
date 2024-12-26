@@ -69,6 +69,19 @@ var updateStudent = function (sid, name, age) {
     });
 }
 
+// Function to check if the student ID already exists
+function checkStudentExists(sid) {
+  return new Promise((resolve, reject) => {
+      connection.query("SELECT * FROM student WHERE sid = ?", [sid], (error, results) => {
+          if (error) {
+              reject(error);
+          } else {
+              resolve(results.length > 0); // If there's a result, the ID exists
+          }
+      });
+  });
+}
+
 module.exports = {
-  findAllStudents, findStudentById, updateStudent, addStudent
+  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists
 };

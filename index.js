@@ -84,6 +84,12 @@ app.post("/students/add",
       check("sid").isLength({ min: 4, max: 4 }).withMessage("Student ID must be 4 characters."),
       check("name").isLength({ min: 2 }).withMessage("Name must be at least 2 characters."),
       check("age").isInt({ min: 18 }).withMessage("Age must be 18 or older."),
+      check("sid").custom(async (sid) => { // Creating a custom check to see if ID exists in the database
+        const exists = await mysqlDao.checkStudentExists(sid);
+        if (exists) {
+            throw new Error("Student ID already exists.");
+        }
+    })
   ],
   (req, res) => {
       const errors = validationResult(req);
