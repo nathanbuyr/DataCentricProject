@@ -9,3 +9,7 @@ const { check, validationResult } = require('express-validator');
 app.listen(3004, () => {
     console.log("Port is listening on 3004")
 })
+
+app.get("/", (req, res) => {
+    res.render("home");
+});
