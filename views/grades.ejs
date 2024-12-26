@@ -25,8 +25,10 @@
             <% grades.forEach(grade => { %>
                 <tr>
                     <td><%= grade.studentName %></td>
-                    <td><%= grade.moduleName %></td>
-                    <td><%= grade.grade %></td>
+                    <td><%= grade.moduleName || "" %></td>
+                    <!--Checks to see if the student has a module or not,
+                    displays the module if true, nothing if not-->
+                    <td><%= grade.moduleName ? grade.grade : "" %></td>
                 </tr>
             <% }) %>
         </tbody>

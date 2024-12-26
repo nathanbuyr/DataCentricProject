@@ -85,12 +85,13 @@ function checkStudentExists(sid) {
 const getGrades = () => {
   return new Promise((resolve, reject) => {
       const query = `
-          SELECT student.name AS studentName, 
-                 module.name AS moduleName, 
-                 grade.grade AS grade
-          FROM grade
-          INNER JOIN student ON grade.sid = student.sid
-          INNER JOIN module ON grade.mid = module.mid
+          SELECT 
+              student.name AS studentName, 
+              module.name AS moduleName, 
+              grade.grade AS grade
+          FROM student
+          LEFT JOIN grade ON student.sid = grade.sid
+          LEFT JOIN module ON grade.mid = module.mid
           ORDER BY student.name, module.name;
       `;
 
