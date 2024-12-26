@@ -1,24 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Update Student</title>
+    <title>Edit Student</title>
   </head>
   <body>
+    <a href="/">Home</a><br>
     <h1>Update Student</h1>
+    
+    <% if (errors != undefined) { %>
+        <ul>
+            <% errors.forEach((error) => { %>
+                <li style="color: red;"><%= error.msg %></li>
+            <% }) %>
+        </ul>
+    <% } %>
 
     <form action="/students/edit/<%= student.sid %>" method="POST">
       <div>
         <label for="sid">Student ID:</label>
-        <input type="text" id="sid" name="sid" value="<%= student.sid %>" readonly /> <!--Making sure ID cannot be edited-->
+        <input type="text" id="sid" name="sid" value="<%= student.sid %>" readonly />
       </div>
+
       <div>
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="<%= student.name %>" />
       </div>
+
       <div>
         <label for="age">Age:</label>
         <input type="number" id="age" name="age" value="<%= student.age %>" />
       </div>
+
       <div>
         <button type="submit">Update</button>
       </div>

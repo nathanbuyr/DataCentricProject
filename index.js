@@ -28,35 +28,53 @@ app.get("/students", (req, res) => {
   });
 
   // Route to render the update form for a student
-app.get("/students/edit/:sid", (req, res) => {
+  app.get("/students/edit/:sid", (req, res) => {
     const studentId = req.params.sid;
-  
-    // Grabbing student details from MySQL
-    mysqlDao.findStudentById(studentId)
-      .then((student) => {
-        res.render("editStudent", { student: student });
-      })
-      .catch((error) => {
-        console.log(error);
-        res.send(error);
-      });
-  });
 
-  // Route to handle updating a student's details
-app.post("/students/edit/:sid", (req, res) => {
-    const studentId = req.params.sid;
-    const { name, age } = req.body; // Get updated name and age from form
-  
-    // Update student data in MySQL
-    mysqlDao.updateStudent(studentId, name, age)
-      .then(() => {
-        res.redirect("/students"); // Redirect to students list after update
-      })
-      .catch((error) => {
-        console.log(error);
-        res.send(error);
-      });
-  });
+    mysqlDao.findStudentById(studentId)
+        .then((student) => {
+            res.render("editStudent", {
+                student: student, // Pass the student details
+                errors: [], // Ensure errors is defined so .ejs file can read it in
+            });
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send(error);
+        });
+});
+
+//Handling when user edits a student
+app.post("/students/edit/:sid", 
+    [
+        // Stipulations for updating a student
+        check("name").isLength({ min: 2 }).withMessage("Name should be a minimum of 2 characters."),
+        check("age").isInt({ min: 18 }).withMessage("Age should be 18 or older."),
+    ],
+    (req, res) => {
+        const errors = validationResult(req); // Validate request body
+        const studentId = req.params.sid;
+
+        if (!errors.isEmpty()) {
+            // If the data entered does not follow the stipulations, refresh the update page with error messages
+            res.render("editStudent", {
+                student: { sid: studentId, name: req.body.name, age: req.body.age }, // Preserve entered data
+                errors: errors.errors, // Pass error messages
+            });
+        } else {
+            // If there are no error messages, sucessfully update the student
+            mysqlDao.updateStudent(studentId, req.body.name, req.body.age)
+                .then(() => {
+                    res.redirect("/students"); // Redirect to students page on success
+                })
+                .catch((error) => {
+                    console.log(error);
+                    res.send(error); 
+                });
+        }
+    }
+);
+
 
 app.get("/grades", (req, res) => {
     res.send("<h1>Grades Page</h1>");
