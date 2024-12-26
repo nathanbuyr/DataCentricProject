@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grades</title>
+    <style>
+        table, th, td {
+          border: 1px solid black;
+        }
+        </style>
+</head>
+<body>
+    <a href="/">Home</a><br>
+    <h1>Grades</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Student Name</th>
+                <th>Module Name</th>
+                <th>Grade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% grades.forEach(grade => { %>
+                <tr>
+                    <td><%= grade.studentName %></td>
+                    <td><%= grade.moduleName %></td>
+                    <td><%= grade.grade %></td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+</body>
+</html>

@@ -112,10 +112,15 @@ app.post("/students/add",
   }
 );
 
-
-
 app.get("/grades", (req, res) => {
-    res.send("<h1>Grades Page</h1>");
+    mysqlDao.getGrades()
+        .then((grades) => {
+            res.render("grades", { grades });
+        })
+        .catch((error) => {
+            console.error(error);
+            res.status(500).send("Error retrieving grades");
+        });
 });
 
 app.get("/lecturers", (req, res) => {
