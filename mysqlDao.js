@@ -3,9 +3,9 @@ const mysql = require("mysql");
 // Create MySQL connection
 const connection = mysql.createConnection({
   host: "localhost",
-  user: "root", 
-  password: "root", 
-  database: "proj2024Mysql"
+  user: "root",
+  password: "root",
+  database: "proj2024Mysql",
 });
 
 connection.connect();
@@ -25,8 +25,11 @@ var findAllStudents = function () {
 
 // Find a student by ID
 var findStudentById = function (sid) {
-    return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM student WHERE sid = ?", [sid], (error, results) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "SELECT * FROM student WHERE sid = ?",
+      [sid],
+      (error, results) => {
         if (error) {
           reject(error); // Reject if error occurs
         } else if (results.length === 0) {
@@ -34,69 +37,80 @@ var findStudentById = function (sid) {
         } else {
           resolve(results[0]); // Resolve with student data
         }
-      });
-    });
-  };
+      }
+    );
+  });
+};
 
-  // Update a student's details in MySQL
+// Update a student's details in MySQL
 var updateStudent = function (sid, name, age) {
-    return new Promise((resolve, reject) => {
-      connection.query(
-        "UPDATE student SET name = ?, age = ? WHERE sid = ?",
-        [name, age, sid],
-        (error, results) => {
-          if (error) {
-            reject(error); // Reject if error occurs
-          } else {
-            resolve(results); // Resolve if update is successful
-          }
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "UPDATE student SET name = ?, age = ? WHERE sid = ?",
+      [name, age, sid],
+      (error, results) => {
+        if (error) {
+          reject(error); // Reject if error occurs
+        } else {
+          resolve(results); // Resolve if update is successful
         }
-      );
-    });
-  };
-  
-  function addStudent(sid, name, age) {
-    return new Promise((resolve, reject) => {
-        connection.query("INSERT INTO student (sid, name, age) VALUES (?, ?, ?)", [sid, name, age], 
-            (error, results) => {
-                if (error) {
-                    reject(error);
-                } else {
-                    resolve(results);
-                }
-            }
-        );
-    });
+      }
+    );
+  });
+};
+
+function addStudent(sid, name, age) {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      "INSERT INTO student (sid, name, age) VALUES (?, ?, ?)",
+      [sid, name, age],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results);
+        }
+      }
+    );
+  });
 }
 
 const deleteStudent = (sid) => {
   return new Promise((resolve, reject) => {
-      connection.query('DELETE FROM student WHERE sid = ?', [sid], (err, results) => {
-          if (err) {
-              reject(err);
-          } else {
-              resolve(results);
-          }
-      });
+    connection.query(
+      "DELETE FROM student WHERE sid = ?",
+      [sid],
+      (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results);
+        }
+      }
+    );
   });
 };
 
 // Function to check if the student ID already exists
 function checkStudentExists(sid) {
   return new Promise((resolve, reject) => {
-      connection.query("SELECT * FROM student WHERE sid = ?", [sid], (error, results) => {
-          if (error) {
-              reject(error);
-          } else {
-              resolve(results.length > 0); // If there's a result, the ID exists
-          }
-      });
+    connection.query(
+      "SELECT * FROM student WHERE sid = ?",
+      [sid],
+      (error, results) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(results.length > 0); // If there's a result, the ID exists
+        }
+      }
+    );
   });
 }
 
 const getGrades = () => {
   return new Promise((resolve, reject) => {
-      const query = `
+    const query = `
           SELECT 
               student.name AS studentName, 
               module.name AS moduleName, 
@@ -107,34 +121,40 @@ const getGrades = () => {
           ORDER BY student.name, module.name;
       `;
 
-      connection.query(query, (error, results) => {
-          if (error) {
-              reject(error);
-          } else {
-              resolve(results);
-          }
-      });
+    connection.query(query, (error, results) => {
+      if (error) {
+        reject(error);
+      } else {
+        resolve(results);
+      }
+    });
   });
 };
 
 // Function to check if a lecturer teaches any modules in MySQL
 var checkLecturerModules = function (lecturerId) {
   return new Promise((resolve, reject) => {
-      connection.query(
-          "SELECT COUNT(*) AS moduleCount FROM module WHERE lecturer = ?",
-          [lecturerId],
-          (err, results) => {
-              if (err) {
-                  reject(err);
-              } else {
-                  resolve(results[0].moduleCount); // Return the count of modules
-              }
-          }
-      );
+    connection.query(
+      "SELECT COUNT(*) AS moduleCount FROM module WHERE lecturer = ?",
+      [lecturerId],
+      (err, results) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(results[0].moduleCount); // Return the count of modules
+        }
+      }
+    );
   });
 };
 
-
 module.exports = {
-  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists, getGrades, checkLecturerModules, deleteStudent
+  findAllStudents,
+  findStudentById,
+  updateStudent,
+  addStudent,
+  checkStudentExists,
+  getGrades,
+  checkLecturerModules,
+  deleteStudent,
 };
