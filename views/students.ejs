@@ -29,7 +29,7 @@
                     <td><%= student.sid %></td>
                     <td><%= student.name %></td>
                     <td><%= student.age %></td>
-                    <td><a href="/students/edit/<%= student.sid %>">Update</a></td>
+                    <td><a href="/students/edit/<%= student.sid %>">Update</a>  <a href="/students/delete/<%= student.sid %>">Delete</a></td>
                 </tr>
             <% }); %>
         </tbody>

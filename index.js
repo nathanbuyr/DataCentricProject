@@ -112,6 +112,22 @@ app.post("/students/add",
   }
 );
 
+
+app.get("/students/delete/:sid", (req, res) => {
+    const studentId = req.params.sid;
+
+    // Call the MySQL DAO to delete the student
+    mysqlDao.deleteStudent(studentId)
+        .then(() => {
+            res.redirect("/students");
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send(error);
+        });
+});
+
+
 app.get("/grades", (req, res) => {
     mysqlDao.getGrades()
         .then((grades) => {
