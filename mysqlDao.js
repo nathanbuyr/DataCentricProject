@@ -69,6 +69,18 @@ var updateStudent = function (sid, name, age) {
     });
 }
 
+const deleteStudent = (sid) => {
+  return new Promise((resolve, reject) => {
+      connection.query('DELETE FROM student WHERE sid = ?', [sid], (err, results) => {
+          if (err) {
+              reject(err);
+          } else {
+              resolve(results);
+          }
+      });
+  });
+};
+
 // Function to check if the student ID already exists
 function checkStudentExists(sid) {
   return new Promise((resolve, reject) => {
@@ -124,5 +136,5 @@ var checkLecturerModules = function (lecturerId) {
 
 
 module.exports = {
-  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists, getGrades, checkLecturerModules
+  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists, getGrades, checkLecturerModules, deleteStudent
 };
