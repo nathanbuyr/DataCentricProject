@@ -124,5 +124,13 @@ app.get("/grades", (req, res) => {
 });
 
 app.get("/lecturers", (req, res) => {
-    res.send("<h1>Lecturers Page</h1>");
-});
+    mongoDao
+      .findAllLecturers()
+      .then((lecturers) => {
+        res.render("lecturers", { lecturers });
+      })
+      .catch((error) => {
+        res.send(error);
+      });
+  });
+  

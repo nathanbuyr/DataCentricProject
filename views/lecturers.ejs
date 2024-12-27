@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecturers</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+    }
+    </style>
+</head>
+<body>
+  <a href="/">Home</a>
+  <h1>Lecturers</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Lecturer ID</th>
+        <th>Name</th>
+        <th>Department ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% lecturers.forEach((lecturer) => { %>
+        <tr>
+          <td><%= lecturer._id %></td>
+          <td><%= lecturer.name %></td>
+          <td><%= lecturer.did %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</body>
+</html>
