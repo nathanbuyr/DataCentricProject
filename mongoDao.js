@@ -8,13 +8,12 @@ MongoClient.connect("mongodb://127.0.0.1:27017")
     console.log(error.message);
   });
 
+  // Find all lecturers and sort them by their _id field in ascending order
   var findAllLecturers = function () {
     return new Promise((resolve, reject) => {
-      var cursor = coll.find(); // Retrieves all documents from the "lecturers" collection
-      cursor
-        .toArray()
-        .then((documents) => {
-          resolve(documents);
+      coll.find().sort({_id: 1}).toArray()  // 1 sorts in ascending order
+        .then((lecturers) => {
+          resolve(lecturers);
         })
         .catch((error) => {
           reject(error);
