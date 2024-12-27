@@ -127,10 +127,51 @@ app.get("/lecturers", (req, res) => {
     mongoDao
       .findAllLecturers()
       .then((lecturers) => {
-        res.render("lecturers", { lecturers });
+        // Render the lecturers page and pass the error if it exists
+        res.render("lecturers", { lecturers, error: req.query.error });
       })
       .catch((error) => {
+        console.log(error);
         res.send(error);
       });
-  });
-  
+});
+
+
+  app.get("/lecturers/delete/:id", (req, res) => {
+    const lecturerId = req.params.id;
+
+    // Check if the lecturer teaches any module
+    mysqlDao.checkLecturerModules(lecturerId)
+        .then((moduleCount) => {
+            if (moduleCount > 0) {
+                // If lecturer teaches any modules, send an error message
+                mongoDao.findAllLecturers()
+                    .then((lecturers) => {
+                        res.render("lecturers", {
+                            lecturers: lecturers,
+                            error: "Cannot delete lecturer because they are teaching one or more modules."
+                        });
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        res.send(error);
+                    });
+            } else {
+                // If no modules, proceed with deleting lecturer from MongoDB
+                mongoDao.deleteLecturer(lecturerId)
+                    .then(() => {
+                        res.redirect("/lecturers"); // Redirect back to the lecturers page
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        res.send(error);
+                    });
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            res.send(error);
+        });
+});
+
+

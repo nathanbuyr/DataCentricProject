@@ -21,6 +21,19 @@ MongoClient.connect("mongodb://127.0.0.1:27017")
     });
   };
 
+  // Function to delete a lecturer from MongoDB
+var deleteLecturer = function (lecturerId) {
+  return new Promise((resolve, reject) => {
+      coll.deleteOne({ _id: lecturerId })
+          .then(() => {
+              resolve();
+          })
+          .catch((error) => {
+              reject(error);
+          });
+  });
+};
+
   module.exports = {
-    findAllLecturers
+    findAllLecturers, deleteLecturer
   };

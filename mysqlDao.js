@@ -105,6 +105,24 @@ const getGrades = () => {
   });
 };
 
+// Function to check if a lecturer teaches any modules in MySQL
+var checkLecturerModules = function (lecturerId) {
+  return new Promise((resolve, reject) => {
+      connection.query(
+          "SELECT COUNT(*) AS moduleCount FROM module WHERE lecturer = ?",
+          [lecturerId],
+          (err, results) => {
+              if (err) {
+                  reject(err);
+              } else {
+                  resolve(results[0].moduleCount); // Return the count of modules
+              }
+          }
+      );
+  });
+};
+
+
 module.exports = {
-  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists, getGrades
+  findAllStudents, findStudentById, updateStudent, addStudent, checkStudentExists, getGrades, checkLecturerModules
 };

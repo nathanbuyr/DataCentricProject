@@ -8,11 +8,16 @@
     table, th, td {
       border: 1px solid black;
     }
-    </style>
+  </style>
 </head>
 <body>
   <a href="/">Home</a>
   <h1>Lecturers</h1>
+
+  <% if (error) { %>
+    <p style="color: red;"><%= error %></p>
+<% } %>
+
   <table>
     <thead>
       <tr>
