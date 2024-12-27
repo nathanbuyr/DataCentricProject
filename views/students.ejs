@@ -14,6 +14,13 @@
     <h1>Students List</h1>
     <a href="/">Home</a>
     <a href="/students/add">Add Student</a>
+    <br>
+  <!-- Sorting buttons for Name and ID -->
+  <a href="/students?sort=sid&order=asc">Sort by ID Ascending</a>
+  <a href="/students?sort=sid&order=desc">Sort by ID Descending</a>
+  <a href="/students?sort=name&order=asc">Sort by Name Ascending</a>
+  <a href="/students?sort=name&order=desc">Sort by Name Descending</a>
+
     <table>
         <thead>
             <tr>
@@ -29,7 +36,7 @@
                     <td><%= student.sid %></td>
                     <td><%= student.name %></td>
                     <td><%= student.age %></td>
-                    <td><a href="/students/edit/<%= student.sid %>">Update</a>  <a href="/students/delete/<%= student.sid %>">Delete</a></td>
+                    <td><a href="/students/edit/<%= student.sid %>">Update</a></td>
                 </tr>
             <% }); %>
         </tbody>

@@ -14,9 +14,16 @@
   <a href="/">Home</a>
   <h1>Lecturers</h1>
 
+  <!-- Display error message if any -->
   <% if (error) { %>
     <p style="color: red;"><%= error %></p>
-<% } %>
+  <% } %>
+
+  <!-- Sorting links -->
+  <a href="/lecturers?sort=_id&order=asc">Sort by Lecturer ID Ascending</a>
+  <a href="/lecturers?sort=_id&order=desc">Sort by Lecturer ID Descending</a>
+  <a href="/lecturers?sort=did&order=asc">Sort by Department ID Ascending</a>
+  <a href="/lecturers?sort=did&order=desc">Sort by Department ID Descending</a>
 
   <table>
     <thead>

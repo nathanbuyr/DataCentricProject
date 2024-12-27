@@ -17,15 +17,30 @@ app.get("/", (req, res) => {
 
 // Route for displaying students
 app.get("/students", (req, res) => {
-    mysqlDao.findAllStudents() // Get students from MySQL
-      .then((data) => {
-        res.render("students", { students: data }); // Pass the students data to EJS
+    const sortField = req.query.sort || 'sid'; // Default sort by sid
+    const sortOrder = req.query.order == 'desc' ? -1 : 1; // Default to ascending order
+  
+    mysqlDao.findAllStudents()
+      .then((students) => {
+        // Sort students
+        students.sort((a, b) => {
+          if (a[sortField] < b[sortField]) {
+            return -1 * sortOrder;
+          }
+          if (a[sortField] > b[sortField]) {
+            return 1 * sortOrder;
+          }
+          return 0;
+        });
+  
+        res.render("students", { students });
       })
       .catch((error) => {
         console.log(error);
         res.send(error);
       });
   });
+  
 
   // Route to render the update form for a student
   app.get("/students/edit/:sid", (req, res) => {
@@ -129,28 +144,55 @@ app.get("/students/delete/:sid", (req, res) => {
 
 
 app.get("/grades", (req, res) => {
+    const sortField = req.query.sort || 'studentName'; // Default sort by studentName
+    const sortOrder = req.query.order === 'desc' ? -1 : 1; // Default to ascending order
+  
     mysqlDao.getGrades()
-        .then((grades) => {
-            res.render("grades", { grades });
-        })
-        .catch((error) => {
-            console.error(error);
-            res.status(500).send("Error retrieving grades");
+      .then((grades) => {
+        // Sort grades based on the query parameters
+        grades.sort((a, b) => {
+          if (a[sortField] < b[sortField]) {
+            return -1 * sortOrder;
+          }
+          if (a[sortField] > b[sortField]) {
+            return 1 * sortOrder;
+          }
+          return 0;
         });
-});
-
-app.get("/lecturers", (req, res) => {
-    mongoDao
-      .findAllLecturers()
-      .then((lecturers) => {
-        // Render the lecturers page and pass the error if it exists
-        res.render("lecturers", { lecturers, error: req.query.error });
+  
+        res.render("grades", { grades });
       })
       .catch((error) => {
-        console.log(error);
-        res.send(error);
+        console.error(error);
+        res.status(500).send("Error retrieving grades");
       });
-});
+  });
+  
+
+  app.get("/lecturers", (req, res) => {
+    const sortField = req.query.sort || '_id'; // Default sort by _id (Lecturer ID)
+    const sortOrder = req.query.order === 'desc' ? -1 : 1; // Default to ascending order
+  
+    mongoDao.findAllLecturers()
+      .then((lecturers) => {
+        // Sort lecturers based on the query parameters
+        lecturers.sort((a, b) => {
+          if (a[sortField] < b[sortField]) {
+            return -1 * sortOrder;
+          }
+          if (a[sortField] > b[sortField]) {
+            return 1 * sortOrder;
+          }
+          return 0;
+        });
+  
+        res.render("lecturers", { lecturers, error: null });
+      })
+      .catch((error) => {
+        res.render("lecturers", { lecturers: [], error: error.message });
+      });
+  });
+  
 
 
   app.get("/lecturers/delete/:id", (req, res) => {

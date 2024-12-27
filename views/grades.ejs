@@ -1,37 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grades</title>
-    <style>
-        table, th, td {
-          border: 1px solid black;
-        }
-        </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Grades</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+    }
+  </style>
 </head>
 <body>
-    <a href="/">Home</a><br>
-    <h1>Grades</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>Student Name</th>
-                <th>Module Name</th>
-                <th>Grade</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% grades.forEach(grade => { %>
-                <tr>
-                    <td><%= grade.studentName %></td>
-                    <td><%= grade.moduleName || "" %></td>
-                    <!--Checks to see if the student has a module or not,
-                    displays the module if true, nothing if not-->
-                    <td><%= grade.moduleName ? grade.grade : "" %></td>
-                </tr>
-            <% }) %>
-        </tbody>
-    </table>
+  <a href="/">Home</a>
+  <h1>Grades</h1>
+
+  <!-- Sorting buttons for Student Name and Module Name -->
+  <a href="/grades?sort=studentName&order=asc">Sort by Student Name Ascending</a>
+  <a href="/grades?sort=studentName&order=desc">Sort by Student Name Descending</a>
+  <a href="/grades?sort=moduleName&order=asc">Sort by Module Name Ascending</a>
+  <a href="/grades?sort=moduleName&order=desc">Sort by Module Name Descending</a>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Student Name</th>
+        <th>Module Name</th>
+        <th>Grade</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% grades.forEach((grade) => { %>
+        <tr>
+          <td><%= grade.studentName %></td>
+          <td><%= grade.moduleName ? grade.moduleName : "N/A" %></td>
+          <td><%= grade.moduleName ? grade.grade : "N/A" %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
 </body>
 </html>
